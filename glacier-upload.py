@@ -55,7 +55,7 @@ class Upload(object):
     def upload_all_chunks(self):
         for chunk in self.get_chunks():
             chunk_bytes, start_byte, end_byte, count = chunk
-            content_range = 'Content-Range: bytes {}-{}/*'.format(start_byte, end_byte)
+            content_range = 'bytes {}-{}/*'.format(start_byte, end_byte)
             print('Uploading chunk {} ({})'.format(count, content_range))
 
             response = self.multipart_upload_resource.upload_part(range=content_range, body=chunk_bytes)
