@@ -1,12 +1,13 @@
 # glacier-upload
 
 Utility to simplify multipart uploads to AWS Glacier. 
-Useful since the AWS CLI command `aws glacier upload ...` handles a maximum file size of 4 GB, and managing multipart uploads
-manually is tedious.
+Useful since the AWS CLI command `aws glacier upload ...` handles a maximum file size of 4 GB, beyond which 
+multipart uploads are required, and managing multipart uploads manually is tedious.
+
 Basically a wrapper around the `MultipartUpload` resource from boto3.
 
 ## Usage
-`glacier-upload.py [-h] [-v] [-d DESC] [-s SIZE] vault file`
+`python glacier-upload.py [-h] [-v] [-d DESC] [-s SIZE] vault file`
 
 Argument | Optional | Usage
 --- | --- | ---
@@ -22,7 +23,7 @@ Examples:
 - `python glacier-upload.py --size 256MB --description 'Family photos 2012-2015' my_backup_vault big_archive.zip`
 
 ## Tips
-- You must already have AWS credentials on your computer. Logging in is not handled.
+- You must already have AWS credentials that boto3 can use. Logging in is not handled.
 - Chunk size is supplied in human-readable format, e.g. `4MB`, `1GB`, etc. 
 Both `MB` and `MiB`-style suffixes are supported, and both are taken to be powers of 1024, since this behaviour is required by boto3. 
 - The chunk size value must be `1MB` times a power of 2 - e.g. `8MB` and `1GB` are acceptable since 8 and 1024 

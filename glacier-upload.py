@@ -71,10 +71,10 @@ class Upload(object):
 
 
 def parse_args():
-    def parse_chunk_size(args):
+    def parse_chunk_size():
         # Parse the chunk size if supplied as an argument, e.g. ['4MB'] -> 4194304
         # If no argument is supplied, we use the default, and no parsing is needed
-        chunk_size = humanfriendly.parse_size(args.chunk_size[0], binary=True) \
+        chunk_size = humanfriendly.parse_size(args.chunk_size, binary=True) \
             if isinstance(args.chunk_size, list) \
             else args.chunk_size
 
@@ -94,15 +94,15 @@ def parse_args():
     parser.add_argument('-v', '--verbose', default=False, action='store_true', help='verbose output')
     parser.add_argument('-d', '--description', nargs=1, type=str, metavar='DESC',
                         help='file description - defaults to file name')
-    parser.add_argument('-s', '--chunk-size', nargs=1, type=str, dest='chunk_size', default=DEFAULT_CHUNK_SIZE, metavar='SIZE',
-                        help='chunk size, specified as number + scale, e.g. "4MB", "2GB" - must be a megabyte '
-                             'multiplied by a power of 2, max 4 GiB, use suffix MB/MiB/GB/GiB, etc. '
-                             '(defaults to 64 MiB)')
+    parser.add_argument('-s', '--chunk-size', nargs=1, type=str, dest='chunk_size', default=DEFAULT_CHUNK_SIZE,
+                        metavar='SIZE', help='chunk size, specified as number + scale, e.g. "4MB", "2GB" - '
+                                             'must be a megabyte multiplied by a power of 2, max 4 GiB, use '
+                                             'suffix MB/MiB/GB/GiB, etc. (defaults to 64 MiB)')
     args = parser.parse_args()
     args.vault = args.vault[0]
     args.file = args.file[0]
     args.description = args.description if args.description else os.path.basename(args.file)
-    args.chunk_size = parse_chunk_size(args)
+    args.chunk_size = parse_chunk_size()
     return args
 
 
