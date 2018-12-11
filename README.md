@@ -1,10 +1,15 @@
 # glacier-upload
 
 Utility to simplify multipart uploads to AWS Glacier. 
-Useful since the AWS CLI command `aws glacier upload ...` handles a maximum file size of 4 GB, beyond which 
+Useful since the AWS CLI command `aws glacier upload-archive` handles a maximum file size of 4 GB, beyond which 
 multipart uploads are required, and managing multipart uploads manually is tedious.
 
 Basically a wrapper around the `MultipartUpload` resource from boto3.
+
+## Prerequisites
+- An AWS account where you have already created the Glacier vaults you will use
+- Python 3
+- Some other dependencies, install with `pip install -r requirements.txt`
 
 ## Usage
 `python glacier-upload.py [-h] [-v] [-d DESC] [-s SIZE] vault file`
@@ -18,7 +23,7 @@ Argument | Optional | Usage
 `vault` | No | Name of the Glacier vault to which the archive will be uploaded.
 `file` | No | Full path to the archive to be uploaded.
 
-Examples:
+Examples (assuming `big_archive.zip` is in your working directory):
 - `python glacier-upload.py my_backup_vault big_archive.zip`
 - `python glacier-upload.py --size 256MB --description 'Family photos 2012-2015' my_backup_vault big_archive.zip`
 
@@ -31,6 +36,7 @@ are powers of 2, whereas `3MB` is not acceptable. The value must be between `1MB
 
 ## Todo
 - Parallel uploading
+- Upload several files in one go
 - More robust error handling (e.g. should formally cancel the upload in case of error)
 - Better code structure
 
