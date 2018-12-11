@@ -41,9 +41,9 @@ class Upload(object):
 
     def initiate_upload(self):
         client = boto3.client('glacier')
-        initiate_response = client.initiate_upload(vaultName=self.vault,
-                                                   archiveDescription=self.description,
-                                                   partSize=self.chunk_size)
+        initiate_response = client.initiate_multipart_upload(vaultName=self.vault,
+                                                             archiveDescription=self.description,
+                                                             partSize=str(self.chunk_size))
         pprint.pprint(initiate_response)
 
         upload_id = initiate_response['uploadId']
@@ -55,7 +55,7 @@ class Upload(object):
     def upload_all_chunks(self):
         for chunk in self.get_chunks():
             chunk_bytes, start_byte, end_byte, count = chunk
-            content_range = 'Content-Range: bytes {}-{}/{}'.format(start_byte, end_byte, chunk_bytes)
+            content_range = 'Content-Range: bytes {}-{}/*'.format(start_byte, end_byte)
             print('Uploading chunk {} ({})'.format(count, content_range))
 
             response = self.multipart_upload_resource.upload_part(range=content_range, body=chunk_bytes)
