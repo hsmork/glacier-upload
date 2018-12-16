@@ -12,7 +12,7 @@ Basically a wrapper around the `MultipartUpload` resource from boto3.
 - Some other dependencies, install with `pip install -r requirements.txt`
 
 ## Usage
-`python glacier-upload.py [-h] [-v] [-d DESC] [-s SIZE] vault file`
+`$ python glacier-upload.py [-h] [-v] [-d DESC] [-s SIZE] vault file`
 
 Argument | Optional | Usage
 --- | --- | ---
@@ -23,9 +23,12 @@ Argument | Optional | Usage
 `vault` | No | Name of the Glacier vault to which the archive will be uploaded.
 `file` | No | Full path to the archive to be uploaded.
 
-Examples (assuming `big_archive.zip` is in your working directory):
-- `python glacier-upload.py my_backup_vault big_archive.zip`
-- `python glacier-upload.py --chunk-size 256MB --description 'Family photos 2012-2015' my_backup_vault big_archive.zip`
+Examples:
+
+- `$ python glacier-upload.py my_backup_vault big_archive.zip`
+- `$ python glacier-upload.py --chunk-size 256MB --description 'Family photos 2012-2015' my_backup_vault ~/path/to/big_archive.zip`
+
+Both relative and absolute paths to the archive are supported.
 
 ## Tips
 - You must already have AWS credentials that boto3 can use. Logging in is not handled.
