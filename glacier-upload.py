@@ -103,7 +103,7 @@ def parse_args():
                                              'suffix MB/MiB/GB/GiB, etc. (defaults to 64 MiB)')
     args = parser.parse_args()
     args.vault = args.vault[0]
-    args.file = args.file[0]
+    args.file = os.path.abspath(args.file[0])
     args.description = args.description if args.description else os.path.basename(args.file)
     args.chunk_size = parse_chunk_size()
     return args
