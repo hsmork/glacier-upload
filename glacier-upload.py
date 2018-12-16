@@ -66,15 +66,18 @@ class Upload(object):
         total_size = os.path.getsize(self.file)
         total_checksum = botocore.utils.calculate_tree_hash(open(self.file, 'rb'))
 
-        completion_response = self.multipart_upload_resource.complete(total_size, total_checksum)
+        completion_response = self.multipart_upload_resource.complete(archiveSize=str(total_size),
+                                                                      checksum=total_checksum)
+        print('Completing upload')
         pprint.pprint(completion_response)
+        print('\33[32mUpload complete: {}\33[0m'.format(self.file))
 
 
 def parse_args():
     def parse_chunk_size():
         # Parse the chunk size if supplied as an argument, e.g. ['4MB'] -> 4194304
         # If no argument is supplied, we use the default, and no parsing is needed
-        chunk_size = humanfriendly.parse_size(args.chunk_size, binary=True) \
+        chunk_size = humanfriendly.parse_size(args.chunk_size[0], binary=True) \
             if isinstance(args.chunk_size, list) \
             else args.chunk_size
 
